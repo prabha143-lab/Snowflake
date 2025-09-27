@@ -1,0 +1,110 @@
+What is your current project, and what is your experience with SQL, Snowflake, or other databases?
+
+Can you walk us through your recent Snowflake experience, especially how you read data from any source and the transformation or business logic you have implemented?
+
+What ETL tool are you using? Is it only Snowpipe?
+
+What transformations do you recall from your recent projects?
+
+After data lands in the staging area, how do you move it from staging to target tables?
+
+How do you implement SCD (Type 2) logic in your project?
+
+Who decides which columns should be treated as SCD Type 2?
+
+Do you have a framework for SCD Type 2, or is it written manually for each table?
+
+How do you handle Delta logic within the same stored procedure? What are the key columns you use for Delta logic?
+
+What scheduling and monitoring tools do you use? Have you worked with orchestration tools?
+
+How have you handled stored procedure failures in production or UAT environments? Can you share any specific debugging experience?
+
+How do you resolve numeric errors or column-length issues when a stored procedure fails? How do you identify the problematic column?
+
+Do you have experience with PL/SQL packages, functions, and record types?
+
+Have you worked with Linux shell scripting or related workflow tools?
+
+Are you comfortable working during EST timings or flexible with late evening shifts?
+
+Were you an independent contributor at Manulife, and what kind of support role did you have?
+
+
+
+
+
+
+Here are the exact interviewer questions captured from the conversation you shared:
+
+We have some legacy applications, and we need to revamp them into Snowflake. That is our current requirement. Can you tell us about your current project and your experience with SQL, Snowflake, or any other databases?
+
+Can you walk us through your recent Snowflake experience? For example, reading data from any source and the transformations or business logic you have implemented?
+
+What ETL tool are you using? Is it only Snowpipe?
+
+What kinds of transformations do you recall from your recent projects?
+
+After data lands in the staging area, how do you move it from staging to target tables?
+
+How do you implement SCD Type 2 in your project?
+
+Who decides which column is supposed to be SCD Type 2? Is it you or someone else?
+
+Do you have any framework to handle SCD Type 2, or do you write manual logic for each table?
+
+How do you handle Delta in the same stored procedure? What key columns do you use for Delta logic?
+
+What scheduling and monitoring tools are you using? Have you worked with orchestration tools like Apache Airflow?
+
+What is your approach when a Snowflake stored procedure fails in production or UAT? Have you debugged and solved such issues?
+
+If a stored procedure fails due to numeric or column-length errors, how do you identify which column is problematic? How do you quickly resolve such issues?
+
+Do you have experience writing PL/SQL packages, functions, and using record types?
+
+Have you worked with Linux shell scripting or related automation/workflow tools?
+
+
+
+*******************************************************************************************
+
+
+
+Can you walk us through your recent Snowflake experience from the let's say, for example, reading data from any source and can you just walk us through like what are the transformation or business logic you have implemented?
+
+What is the ETL tool you are using? Is it only Snowpipe?
+
+What transformation you have like do you recall in your recent projects? What kind of transformations?
+
+The data is landed in your staging area, and then you have written a stored procedure for each table. Like, how did it... how did you bring the data from staging to...?
+
+Who will give an idea like which column is supposed to be SCD Type 2? You decide, or someone will tell you?
+
+Do you have any framework to handle SCD Type 2, or you're writing it manually for each table, how the SCD Type 2 is supposed to work?
+
+How did you handle the Delta in the same stored procedure?
+
+If it is going to be too complex, for example, the table having like, let's say, 10 million or 1 trillion rows, you cannot do merge each and every time.
+
+If you have a given opportunity to write a best, like optimized way to handle the Delta, what do you can think of? Let's say I'll give you an example, you have an employee table, and you're writing a stored procedure to handle the Delta logic. What are the key columns you are looking for?
+
+What is our decision tools? They have experience. How did your jobs are being scheduled and how did you monitor?
+
+Let's say, given a scenario, a Snowflake stored procedure is getting failed. Okay, what are... what are your experience like? How did you looked into a stored procedure failure? Any situation where a stored procedure is getting failed in your production or UAT environment? Like, how did you look into the issue and did you get a chance to solve anything in the Snowflake procedures?
+
+I'll give you a scenario, for example, your stored procedure your final table is getting... and getting an error like a numeric value or a string is more than the expected. For example, there are two scenarios: one is your stored procedure is getting failed with the numeric error, and the one of the column length is more than the expected. So how quickly you... what you can think of quickly resolve this issue? Let's say you have 50 plus columns. Like, what exactly you can do? Think of with your experience.
+
+How did you identify the column which is having which is having the more than the length? How did you identify the source column or source is sending more value than the defined in the target?
+
+Have you... have you debugged the stored procedure like how it is being loaded by any chance in your experience in your PL/SQL experience? So have you written packages and functions stored procedures?
+
+Is it an OLTP or OLAP?
+
+You must be using record type as an input parameter. Have you used record type?
+
+So when you increase the record type column or any any field, have you remember by any chance what are the things you have done?
+
+How did you debug your stored procedure? Let's say your stored procedure is taking more time. Like, what exactly you know you can...?
+
+Have you worked on the Linux shell script environment?
