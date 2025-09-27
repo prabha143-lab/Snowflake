@@ -1,0 +1,37 @@
+
+
+CREATE OR REPLACE TABLE TG_EMPL123
+( EMPID INT,
+  EMPNAME VARCHAR(30),
+  SALARY FLOAT,
+  AGE INT,
+  DEPT VARCHAR(10),
+  LOCATION VARCHAR(20)
+);
+
+CREATE OR REPLACE STREAM STREAM_TG_EMPL123 ON TABLE TG_EMPL123;
+
+SELECT * FROM STREAM_TG_EMPL123;
+
+DROP TABLE TG_EMPL123;
+
+SELECT * FROM STREAM_TG_EMPL123;
+
+Base table 'MYSNOW.PUBLIC.TG_EMPL123' dropped, cannot read from stream 'STREAM_TG_EMPL123' in line 1 position 14.
+
+CREATE TABLE MYTABLE CLONE STREAM_TG_EMPL123;
+
+002136 (0A000): SQL compilation error: A clone operation cannot be performed on a TABLE with a STREAM source. Please refer to documentation for details.
+
+CREATE OR REPLACE VIEW my_view AS
+SELECT *FROM TG_EMPL123;
+
+
+CREATE TABLE MY_VIEW_CLONE CLONE STREAM_TG_EMPL123;
+
+002136 (0A000): SQL compilation error: A clone operation cannot be performed on a TABLE with a STREAM source. Please refer to documentation for details.
+
+
+CREATE OR REPLACE STREAM STREAM_TG_EMPL123_CLONE CLONE STREAM_TG_EMPL123;
+
+--Stream STREAM_TG_EMPL123_CLONE successfully created.
