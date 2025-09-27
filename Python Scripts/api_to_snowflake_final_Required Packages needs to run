@@ -1,0 +1,11 @@
+C:\Users\prabh>pip install requests pandas snowflake-connector-python
+
+C:\Pythontestfiles>pip install snowflake-snowpark-python
+
+C:\Pythontestfiles>python -c "from snowflake.snowpark import Session; print('✅ Snowpark is ready.')"
+✅ Snowpark is ready.
+
+
+C:\Pythontestfiles>python api_to_snowflake_final.py
+✅ Fetched 100 records from API.
+✅ Inserted 100 rows into API_POSTS.
