@@ -1,0 +1,19 @@
+What is a Snowflake External Table? (Definition and core concept)
+
+How is an External Table different from a standard Snowflake table? (Comparison)
+
+Does an External Table store data? (Data storage)
+
+What metadata does an External Table store? (Metadata and pseudocolumns)
+
+What is the VALUE column in an External Table? (Specific column detail)
+
+Can you perform DML operations (INSERT, UPDATE, DELETE) on an External Table? (Functionality)
+
+How do you refresh an External Table? (Manual and automatic refresh)
+
+Can you join an External Table with a standard Snowflake table? (Querying and joins)
+
+Does Snowflake's Time Travel feature work on External Tables? (Feature compatibility)
+
+Can you clone an External Table? (Cloning feature)
