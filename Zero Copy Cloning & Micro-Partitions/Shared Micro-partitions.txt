@@ -1,0 +1,30 @@
+Shared Micro-partitions: When you clone a table (emp), do the original and the cloned table share the same micro-partitions?
+
+When you clone a table, the original and the clone both point to the same micro-partitions. 
+This is Zero-Copy Cloning, which is instant and uses no extra storage initially. 
+The clone is a separate logical table, but it shares the physical data with the original.
+
+
+
+DML on Cloned Table: If you perform DML operations (INSERT, UPDATE, DELETE) on the cloned table, will new micro-partitions be created for all three operations?
+
+Any DML operation (INSERT, UPDATE, or DELETE) on the cloned table triggers Snowflake's "copy-on-write" mechanism. 
+Because micro-partitions are immutable, Snowflake creates new micro-partitions to store the changes. 
+The cloned table's metadata then updates to point to these new partitions, while the original table's pointers remain unchanged.
+
+DML on Original Table: If you then perform DML operations on the original table, will the changes be reflected in the cloned table?
+
+Changes to the original table are not reflected in the cloned table. The clone is a static snapshot of the original at the moment it was created. 
+It remains completely independent and isolated from any new data or modifications made to the original table.
+
+
+Here is a concise, short summary of the concepts you provided.
+
+Shared Micro-partitions
+When you clone a table, the original and the clone both point to the same micro-partitions. This is Zero-Copy Cloning, which is instant and uses no extra storage initially. The clone is a separate logical table, but it shares the physical data with the original.
+
+DML on Cloned Table
+Any DML operation (INSERT, UPDATE, or DELETE) on the cloned table triggers Snowflake's "copy-on-write" mechanism. Because micro-partitions are immutable, Snowflake creates new micro-partitions to store the changes. The cloned table's metadata then updates to point to these new partitions, while the original table's pointers remain unchanged.
+
+DML on Original Table
+Changes to the original table are not reflected in the cloned table. The clone is a static snapshot of the original at the moment it was created. It remains completely independent and isolated from any new data or modifications made to the original table.
