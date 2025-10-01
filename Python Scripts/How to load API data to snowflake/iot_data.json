@@ -1,0 +1,42 @@
+[
+  {
+    "device_id": "sensor_001",
+    "timestamp": "2025-10-01T11:00:00Z",
+    "temperature": 28.5,
+    "humidity": 60,
+    "battery_level": 85,
+    "status": "active"
+  },
+  {
+    "device_id": "sensor_002",
+    "timestamp": "2025-10-01T11:00:05Z",
+    "temperature": 29.1,
+    "humidity": 58,
+    "battery_level": 90,
+    "status": "active"
+  },
+  {
+    "device_id": "sensor_003",
+    "timestamp": "2025-10-01T11:00:10Z",
+    "temperature": 27.8,
+    "humidity": 62,
+    "battery_level": 75,
+    "status": "active"
+  },
+  {
+    "device_id": "sensor_004",
+    "timestamp": "2025-10-01T11:00:15Z",
+    "temperature": 30.2,
+    "humidity": 55,
+    "battery_level": 60,
+    "status": "offline"
+  },
+  {
+    "device_id": "sensor_005",
+    "timestamp": "2025-10-01T11:00:20Z",
+    "temperature": 26.9,
+    "humidity": 65,
+    "battery_level": 88,
+    "status": "active"
+  }
+]
