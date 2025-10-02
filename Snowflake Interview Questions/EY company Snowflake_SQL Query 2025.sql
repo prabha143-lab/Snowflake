@@ -1,4 +1,4 @@
-Write an SQL query to get the top three selling products by revenue, using the order_items and products tables.
+Question: Write an SQL query to get the top three selling products by revenue, using the order_items and products tables.
 
 Get three top selling products by Revenue
 
