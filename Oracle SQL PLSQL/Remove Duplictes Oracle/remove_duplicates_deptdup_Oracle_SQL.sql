@@ -1,3 +1,5 @@
+**************Methods to Remove Duplicate Records in Oracle *********************
+
 -- Step 1: Create the DEPTDUP table
 DROP TABLE DEPTDUP;
 
