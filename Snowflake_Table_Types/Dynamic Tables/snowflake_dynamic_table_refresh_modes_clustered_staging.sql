@@ -101,3 +101,42 @@ FROM staging_table;
 --Dynamic table MY_DYNAMIC_TABLE_INCREMENTAL successfully created.
 
 
+***************************************
+
+
+CREATE OR REPLACE TABLE raw_sales (
+    product_id INT,
+    day DATE,
+    revenue FLOAT
+);
+
+
+INSERT INTO raw_sales VALUES
+(101, '2024-12-15', 500.00),
+(102, '2024-12-20', 750.00),
+(101, '2025-01-05', 600.00),
+(102, '2025-01-10', 800.00),
+(103, '2025-01-15', 900.00);
+
+
+CREATE OR REPLACE TABLE sales_backfill AS
+SELECT product_id, day, SUM(revenue) AS total_revenue
+FROM raw_sales
+WHERE day < '2025-01-01'
+GROUP BY product_id, day;
+
+
+
+CREATE OR REPLACE DYNAMIC TABLE sales_summary
+TARGET_LAG = '5 minutes'
+WAREHOUSE = compute_wh
+REFRESH_MODE = incremental
+INITIALIZE = on_create
+IMMUTABLE WHERE (day < '2025-01-01')
+BACKFILL FROM sales_backfill
+AS
+SELECT product_id, day, SUM(revenue) AS total_revenue
+FROM raw_sales
+GROUP BY product_id, day;
+
+--Dynamic table SALES_SUMMARY successfully created.
