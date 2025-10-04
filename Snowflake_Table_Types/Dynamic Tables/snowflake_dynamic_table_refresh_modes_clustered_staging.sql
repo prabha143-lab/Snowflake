@@ -104,6 +104,7 @@ FROM staging_table;
 ***************************************
 
 
+--Step 1: Create Raw Sales Table
 CREATE OR REPLACE TABLE raw_sales (
     product_id INT,
     day DATE,
@@ -111,22 +112,43 @@ CREATE OR REPLACE TABLE raw_sales (
 );
 
 
+--Step 2: Insert Historical and Recent Records
+
+-- Historical (before 2025-01-01)
 INSERT INTO raw_sales VALUES
-(101, '2024-12-15', 500.00),
-(102, '2024-12-20', 750.00),
-(101, '2025-01-05', 600.00),
-(102, '2025-01-10', 800.00),
-(103, '2025-01-15', 900.00);
+(201, '2024-12-01', 1000.00),
+(201, '2024-12-01', 500.00),
+(202, '2024-12-10', 1500.00),
+(203, '2024-12-20', 1200.00),
+(204, '2024-12-25', 1300.00);
 
+-- Recent (on or after 2025-01-01)
+INSERT INTO raw_sales VALUES
+(201, '2025-01-05', 1100.00),
+(201, '2025-01-05', 900.00),
+(202, '2025-01-10', 1600.00),
+(203, '2025-01-15', 1700.00),
+(204, '2025-01-20', 1800.00);
 
+SELECT * FROM RAW_SALES ORDER BY PRODUCT_ID;
+
+--Step 3: Create Backfill Table for Frozen Region
 CREATE OR REPLACE TABLE sales_backfill AS
 SELECT product_id, day, SUM(revenue) AS total_revenue
 FROM raw_sales
 WHERE day < '2025-01-01'
 GROUP BY product_id, day;
 
+SELECT * FROM sales_backfill;
+
+PRODUCT_ID	DAY	TOTAL_REVENUE
+201	2024-12-01	1500
+202	2024-12-10	1500
+203	2024-12-20	1200
+204	2024-12-25	1300
 
 
+--Step 4: Create Dynamic Table
 CREATE OR REPLACE DYNAMIC TABLE sales_summary
 TARGET_LAG = '5 minutes'
 WAREHOUSE = compute_wh
@@ -138,5 +160,41 @@ AS
 SELECT product_id, day, SUM(revenue) AS total_revenue
 FROM raw_sales
 GROUP BY product_id, day;
-
 --Dynamic table SALES_SUMMARY successfully created.
+
+SELECT * FROM sales_summary;
+
+
+PRODUCT_ID	DAY	TOTAL_REVENUE
+201	2024-12-01	1500
+202	2024-12-10	1500
+203	2024-12-20	1200
+204	2024-12-25	1300
+201	2025-01-05	2000
+202	2025-01-10	1600
+203	2025-01-15	1700
+204	2025-01-20	1800
+
+
+--Step 6: Teaching Query to Simulate Region Label
+SELECT 
+  product_id, 
+  day, 
+  total_revenue,
+  CASE 
+    WHEN day < '2025-01-01' THEN 'Immutable ❄️'
+    ELSE 'Refreshable 🔄'
+  END AS region
+FROM sales_summary
+ORDER BY product_id, day;
+
+
+PRODUCT_ID	DAY	TOTAL_REVENUE	REGION
+201	2024-12-01	1500	Immutable ❄️
+201	2025-01-05	2000	Refreshable 🔄
+202	2024-12-10	1500	Immutable ❄️
+202	2025-01-10	1600	Refreshable 🔄
+203	2024-12-20	1200	Immutable ❄️
+203	2025-01-15	1700	Refreshable 🔄
+204	2024-12-25	1300	Immutable ❄️
+204	2025-01-20	1800	Refreshable 🔄
