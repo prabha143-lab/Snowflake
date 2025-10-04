@@ -107,7 +107,7 @@ WHERE ROWID = (
       AND DNAME = D.DNAME
       AND LOC = D.LOC
 ));
-<<<<<<< HEAD
+
 =======
 
 
@@ -121,7 +121,7 @@ WHERE ROWID = (
       AND LOC = D.LOC
 ));
 
->>>>>>> b00bd9b55b7ce8e4c266b841c5612083e8d2326e
+
 
 
 DELETE DEPTDUP WHERE ROWID NOT IN(SELECT ROWID
