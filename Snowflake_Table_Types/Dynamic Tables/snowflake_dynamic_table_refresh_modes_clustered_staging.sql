@@ -198,3 +198,94 @@ PRODUCT_ID	DAY	TOTAL_REVENUE	REGION
 203	2025-01-15	1700	Refreshable 🔄
 204	2024-12-25	1300	Immutable ❄️
 204	2025-01-20	1800	Refreshable 🔄
+
+
+***************************************************************************************
+
+
+-- STEP 1: Create base tables
+CREATE OR REPLACE TABLE raw_sales (
+    product_id INT,
+    day DATE,
+    revenue NUMBER(12,2)  -- ✅ Fixed-point type
+);
+
+
+CREATE OR REPLACE TABLE product_info (
+    product_id INT,
+    category STRING,
+    brand STRING
+);
+
+-- STEP 2: Insert sample data
+INSERT INTO raw_sales VALUES
+-- Historical
+(101, '2024-12-01', 1000.00),
+(101, '2024-12-01', 500.00),
+(102, '2024-12-10', 1500.00),
+-- Recent
+(101, '2025-01-05', 1100.00),
+(101, '2025-01-05', 900.00),
+(102, '2025-01-10', 1600.00);
+
+
+INSERT INTO product_info VALUES
+(101, 'Electronics', 'Sony'),
+(102, 'Appliances', 'LG');
+
+-- STEP 3: Create backfill table for frozen region
+CREATE OR REPLACE TABLE sales_backfill AS
+SELECT 
+  s.product_id, 
+  s.day, 
+  SUM(s.revenue) AS total_revenue,
+  p.category,
+  p.brand
+FROM raw_sales s
+JOIN product_info p
+  ON s.product_id = p.product_id
+WHERE s.day < '2025-01-01'
+GROUP BY s.product_id, s.day, p.category, p.brand;
+
+-- STEP 4: Create dynamic table with join + immutability
+CREATE OR REPLACE DYNAMIC TABLE sales_enriched
+TARGET_LAG = '5 minutes'
+WAREHOUSE = compute_wh
+REFRESH_MODE = incremental
+INITIALIZE = on_create
+IMMUTABLE WHERE (day < '2025-01-01')
+BACKFILL FROM sales_backfill
+AS
+SELECT 
+  s.product_id, 
+  s.day, 
+  SUM(s.revenue) AS total_revenue,
+  p.category,
+  p.brand
+FROM raw_sales s
+JOIN product_info p
+  ON s.product_id = p.product_id
+GROUP BY s.product_id, s.day, p.category, p.brand;
+
+--Dynamic table SALES_ENRICHED successfully created.
+
+-- STEP 5: Teaching query to simulate region label
+SELECT 
+  product_id, 
+  day, 
+  total_revenue,
+  category,
+  brand,
+  CASE 
+    WHEN day < '2025-01-01' THEN 'Immutable ❄️'
+    ELSE 'Refreshable 🔄'
+  END AS region
+FROM sales_enriched
+ORDER BY product_id, day;
+
+
+PRODUCT_ID	DAY	TOTAL_REVENUE	CATEGORY	BRAND	REGION
+101	2024-12-01	1500.00	Electronics	Sony	Immutable ❄️
+101	2025-01-05	2000.00	Electronics	Sony	Refreshable 🔄
+102	2024-12-10	1500.00	Appliances	LG	Immutable ❄️
+102	2025-01-10	1600.00	Appliances	LG	Refreshable 🔄
