@@ -1,5 +1,6 @@
-Edition
-Business Critical
+Edition : Business Critical
+***************************************
+
 
 CREATE OR REPLACE TABLE DEPT_PERM (
     DEPTNO INT,
@@ -51,4 +52,42 @@ CREATE OR REPLACE TEMPORARY TABLE DEPT_TEMPORARY (
     LOC VARCHAR(50)
 )
 DATA_RETENTION_TIME_IN_DAYS = 90;
+--Table DEPT_TEMPORARY successfully created.
+
+
+
+
+
+
+--Permanent Table with Cluster Key
+
+CREATE OR REPLACE TABLE DEPT_PERM (
+    DEPTNO INT,
+    DNAME VARCHAR(50),
+    LOC VARCHAR(50)
+)
+DATA_RETENTION_TIME_IN_DAYS = 90
+CLUSTER BY (DEPTNO);
+--Table DEPT_PERM successfully created.
+
+
+--Transient Table with Cluster Key
+CREATE OR REPLACE TRANSIENT TABLE DEPT_TRANSIENT (
+    DEPTNO INT,
+    DNAME VARCHAR(50),
+    LOC VARCHAR(50)
+)
+DATA_RETENTION_TIME_IN_DAYS = 1
+CLUSTER BY (DEPTNO);
+--Table DEPT_TRANSIENT successfully created.
+
+
+---Temporary Table with Cluster Key
+CREATE OR REPLACE TEMPORARY TABLE DEPT_TEMPORARY (
+    DEPTNO INT,
+    DNAME VARCHAR(50),
+    LOC VARCHAR(50)
+)
+DATA_RETENTION_TIME_IN_DAYS = 90
+CLUSTER BY (DEPTNO);
 --Table DEPT_TEMPORARY successfully created.
