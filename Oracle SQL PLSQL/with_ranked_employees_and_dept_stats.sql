@@ -11,6 +11,7 @@ FROM EMP E,DEPT D
 WHERE E.DEPTNO=D.DEPTNO)ED
 WHERE ED.DRANK<=3;
 
+
 ***********************************************************************************************************
 WITH Ranked_Employees AS (
     SELECT 
