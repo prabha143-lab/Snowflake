@@ -1,4 +1,4 @@
-**************Methods to Remove Duplicate Records in Oracle *********************
+************** Methods to Remove Duplicate Records in Oracle *********************
 
 -- Step 1: Create the DEPTDUP table
 DROP TABLE DEPTDUP;
@@ -31,6 +31,7 @@ FROM DEPTDUP)E
 WHERE E.RN>1);
 
 SELECT * FROM DEPTDUP;
+****************************************************************************************************************
 
 DELETE FROM DEPTDUP D
 WHERE EXISTS (
@@ -52,7 +53,6 @@ WHERE EXISTS (
 );
 
 
-
 SELECT * FROM DEPTDUP;
 
 DEPTNO	DNAME	LOC
@@ -63,12 +63,13 @@ DEPTNO	DNAME	LOC
 
 4 rows selected.
 
-
+***********************************************************************************************    
 
 DELETE FROM DEPTDUP WHERE ROWID NOT IN(SELECT MIN(ROWID) FROM DEPTDUP GROUP BY DEPTNO);
 DELETE FROM DEPTDUP WHERE ROWID NOT IN(SELECT MAX(ROWID) FROM DEPTDUP GROUP BY DEPTNO);
 
 Correct method:
+---------------------
 
 DELETE FROM DEPTDUP
 WHERE ROWID NOT IN (SELECT MIN(ROWID) FROM DEPTDUP GROUP BY DEPTNO, DNAME, LOC);
@@ -76,13 +77,14 @@ WHERE ROWID NOT IN (SELECT MIN(ROWID) FROM DEPTDUP GROUP BY DEPTNO, DNAME, LOC);
 DELETE FROM DEPTDUP
 WHERE ROWID NOT IN (SELECT MAX(ROWID) FROM DEPTDUP GROUP BY DEPTNO, DNAME, LOC);
 
-*************************************
+********************************************************************************************************
 DELETE FROM DEPTDUP D1 WHERE ROWID>(SELECT MIN(ROWID) FROM DEPTDUP D2 WHERE D1.DEPTNO=D2.DEPTNO);
 
 DELETE FROM DEPTDUP D1 WHERE ROWID<(SELECT MAX(ROWID) FROM DEPTDUP D2 WHERE D1.DEPTNO=D2.DEPTNO);
 
 
 Correct method:
+----------------    
 
 DELETE FROM DEPTDUP D1 
 WHERE ROWID > ( SELECT MIN(D2.ROWID) FROM DEPTDUP D2 
@@ -99,7 +101,7 @@ WHERE ROWID < ( SELECT MAX(D2.ROWID) FROM DEPTDUP D2
     AND D1.LOC = D2.LOC
 );
 
-
+***********************************************************************
 DELETE DEPTDUP WHERE ROWID NOT IN(SELECT ROWID
 FROM DEPTDUP D
 WHERE ROWID = (
@@ -110,8 +112,6 @@ WHERE ROWID = (
       AND LOC = D.LOC
 ));
 
-=======
-
 
 DELETE DEPTDUP WHERE ROWID NOT IN(SELECT ROWID
 FROM DEPTDUP D
@@ -123,15 +123,3 @@ WHERE ROWID = (
       AND LOC = D.LOC
 ));
 
-
-
-
-DELETE DEPTDUP WHERE ROWID NOT IN(SELECT ROWID
-FROM DEPTDUP D
-WHERE ROWID = (
-    SELECT MAX(ROWID)
-    FROM DEPTDUP
-    WHERE DEPTNO = D.DEPTNO
-      AND DNAME = D.DNAME
-      AND LOC = D.LOC
-));
