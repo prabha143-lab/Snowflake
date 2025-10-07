@@ -5,6 +5,7 @@ CREATE TABLE product_sales (
 );
 
 INSERT INTO product_sales VALUES ('Laptop', 'Q1', 1000);
+INSERT INTO product_sales VALUES ('Laptop', 'Q1', 500);
 INSERT INTO product_sales VALUES ('Laptop', 'Q2', 1500);
 INSERT INTO product_sales VALUES ('Laptop', 'Q3', 1200);
 INSERT INTO product_sales VALUES ('Laptop', 'Q4', 1700);
@@ -12,7 +13,7 @@ INSERT INTO product_sales VALUES ('Tablet', 'Q1', 800);
 INSERT INTO product_sales VALUES ('Tablet', 'Q2', 950);
 INSERT INTO product_sales VALUES ('Tablet', 'Q3', 1100);
 INSERT INTO product_sales VALUES ('Tablet', 'Q4', 1300);
-
+INSERT INTO product_sales VALUES ('Tablet', 'Q4', 1200);
 COMMIT;
 
 SELECT * FROM product_sales;
@@ -27,11 +28,13 @@ PIVOT (
     FOR quarter IN ('Q1' AS Q1, 'Q2' AS Q2, 'Q3' AS Q3, 'Q4' AS Q4)
 );
 
+
 SELECT *
 FROM product_sales
 PIVOT (
     SUM(sales_amount) FOR quarter IN ('Q1', 'Q2', 'Q3', 'Q4')
 );
+
 
 SELECT
     product_name,
@@ -43,9 +46,10 @@ FROM product_sales
 GROUP BY product_name;
 
 
+
 PRODUCT_NAME	'Q1'	'Q2'	'Q3'	'Q4'
-Laptop	1000	1500	1200	1700
-Tablet	800	    950	    1100	1300
+Laptop	        1500	1500	1200	1700
+Tablet      	800	    950	    1100	2500
 
 ********************************************************************    
 CREATE TABLE quarterly_sales (
