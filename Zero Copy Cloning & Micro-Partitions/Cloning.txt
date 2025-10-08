@@ -1,4 +1,8 @@
-I have cloned a table named EMP, which contains 10 columns and 14 rows. The cloned table is named EMPCLONE. In the first scenario, I modify only one row in the cloned table EMPCLONE. How many records will remain in the original EMP table? In the second scenario, I modify the original EMP table after creating the clone. Will the cloned table EMPCLONE reflect those changes?
+I have cloned a table named EMP, which contains 10 columns and 14 rows. 
+The cloned table is named EMPCLONE. In the first scenario, I modify only one row in the cloned table EMPCLONE. 
+How many records will remain in the original EMP table? 
+In the second scenario, I modify the original EMP table after creating the clone. 
+Will the cloned table EMPCLONE reflect those changes?
 
 
 First Scenario: The original table still has 14 records

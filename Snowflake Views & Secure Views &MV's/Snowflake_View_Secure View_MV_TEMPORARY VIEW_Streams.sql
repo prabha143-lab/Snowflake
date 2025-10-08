@@ -44,3 +44,4 @@ WHERE amount > 1000;
 CREATE OR REPLACE STREAM mv_temp_vw_transactions
 ON VIEW temp_vw_transactions;--Stream MV_TEMP_VW_TRANSACTIONS successfully created.
 
+
