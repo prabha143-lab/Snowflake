@@ -30,6 +30,9 @@ for i in range(31,40):
     print("After looped append =>", list)
 print(" ")
 print("After looped append =>", list)
+print(" ")
+list +=[41,42,43]
+print("list + =>",list)
 
 
 
@@ -55,5 +58,7 @@ After looped append => [1, -1, 3, 8, 9, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 
 After looped append => [1, -1, 3, 8, 9, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39]
  
 After looped append => [1, -1, 3, 8, 9, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39]
+ 
+list + => [1, -1, 3, 8, 9, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39, 41, 42, 43]
 
 === Code Execution Successful ===
