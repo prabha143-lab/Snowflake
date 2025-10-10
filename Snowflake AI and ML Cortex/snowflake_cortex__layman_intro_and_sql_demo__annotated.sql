@@ -1,6 +1,7 @@
 
 Snowflake Cortex — AI Inside Your Data Warehouse
-Cortex is Snowflake’s built-in AI engine. It lets you run powerful language models (LLMs) directly inside Snowflake—no need to export data or set up external ML tools.
+Cortex is Snowflake’s built-in AI engine. It lets you run powerful language models (LLMs) 
+directly inside Snowflake—no need to export data or set up external ML tools.
 
 🧠 What Can Cortex Do?
 Task	What It Means in Simple Terms
@@ -13,7 +14,8 @@ Task	What It Means in Simple Terms
 🧪 Real-Life Example
 You have this feedback:
 
-"I love the new interface! It’s clean, fast, and easy to use. However, I wish the export feature supported more formats."
+"I love the new interface! It’s clean, fast, and easy to use. 
+However, I wish the export feature supported more formats."
 
 You run:
 
