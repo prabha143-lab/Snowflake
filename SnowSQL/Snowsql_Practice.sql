@@ -23,6 +23,8 @@ ID,NAME,CITY,SALARY
 101,John Doe,New York,75000
 102,Jane Smith,Los Angeles,82000
 103,Ravi Kumar,Hyderabad,68000
+
+
 104,Ana Silva,São Paulo,72000
 105,Li Wei,Beijing,79000
 
