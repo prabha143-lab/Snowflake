@@ -340,7 +340,12 @@ prabhakarreddy1433#COMPUTE_WH@MYSNOW.PUBLIC>SELECT * FROM employee_data_final;
 |    106 | Mei Lin1   | Finance     |  90000 |
 +--------+------------+-------------+--------+
 6 Row(s) produced. Time Elapsed: 0.163s
+prabhakarreddy1433#COMPUTE_WH@MYSNOW.PUBLIC>CREATE OR REPLACE PIPE employee_pipe_final AUTO_INGEST = FALSE AS COPY INTO employee_data_final FROM @employee_
+                                            stage_final/employee_data_final_snowpipe.csv.gz FILE_FORMAT = ( TYPE = 'CSV' FIELD_OPTIONALLY_ENCLOSED_BY = '"'
+                                             SKIP_HEADER = 1) FORCE=TRUE;
+002316 (0A000): SQL compilation error: Invalid copy option 'FORCE' in pipe definition.
 prabhakarreddy1433#COMPUTE_WH@MYSNOW.PUBLIC>
+
 
 
 
@@ -364,18 +369,6 @@ Therefore, Snowflake prevents this option in the pipe definition to protect data
 
 Correct Syntax for Your Pipe
 To correctly define your pipe for future use without the error, simply remove the FORCE=TRUE option:
-
-SQL
-
-CREATE OR REPLACE PIPE employee_pipe_final AUTO_INGEST = FALSE AS 
-COPY INTO employee_data_final 
-FROM @employee_stage_final/employee_data_final_snowpipe.csv.gz 
-FILE_FORMAT = ( 
-    TYPE = 'CSV' 
-    FIELD_OPTIONALLY_ENCLOSED_BY = '"' 
-    SKIP_HEADER = 1
-);
-
 
 
 
