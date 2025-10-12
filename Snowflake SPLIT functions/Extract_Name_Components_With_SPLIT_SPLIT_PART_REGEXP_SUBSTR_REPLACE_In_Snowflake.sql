@@ -217,3 +217,32 @@ ID	VALUE
 3	f
 3	g
 3	h
+
+
+
+***********************************************************
+
+SELECT VALUE AS part
+FROM TABLE(SPLIT_TO_TABLE('a,b,c,,d', ','));
+
+PART
+a
+b
+c
+       --Empty line
+d
+
+SELECT VALUE AS part
+FROM TABLE(STRTOK_SPLIT_TO_TABLE('a,b,c,,d', ','));
+
+PART
+a
+b
+c
+d
+
+
+Function	            Empty Token Handling
+SPLIT_TO_TABLE	        ✅ Skips empty tokens
+STRTOK_SPLIT_TO_TABLE	❌ Preserves empty tokens
+
