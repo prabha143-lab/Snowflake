@@ -194,3 +194,26 @@ ID	VALUE
 2	d
 2	e
 3	f-g-h
+
+********************************************************************************************
+
+CREATE OR REPLACE TABLE split_input (id INT, raw_string STRING );
+
+INSERT INTO split_input (id, raw_string) VALUES (1, 'a.b'), (2, 'c*d*e'), (3,'f-g-h')
+
+SELECT 
+    split_input.id, table1.value
+FROM split_input,
+TABLE(SPLIT_TO_TABLE(replace(replace(raw_string,'*','.'),'-','.'), '.')) AS table1
+ORDER BY table1.value;
+
+
+ID	VALUE
+1	a
+1	b
+2	c
+2	d
+2	e
+3	f
+3	g
+3	h
