@@ -1,4 +1,31 @@
 
+
+
+C:\Users\prabh>pip install "certifi<2025.4.26" -t C:/temp/certifi
+Collecting certifi<2025.4.26
+  Using cached certifi-2025.1.31-py3-none-any.whl.metadata (2.5 kB)
+Using cached certifi-2025.1.31-py3-none-any.whl (166 kB)
+Installing collected packages: certifi
+Successfully installed certifi-2025.1.31
+WARNING: Target directory C:\temp\certifi\certifi already exists. Specify --upgrade to force replacement.
+WARNING: Target directory C:\temp\certifi\certifi-2025.1.31.dist-info already exists. Specify --upgrade to force replacement.
+
+C:\Users\prabh>set REQUESTS_CA_BUNDLE=C:\temp\certifi\certifi\cacert.pem
+
+C:\Users\prabh>snowsql -a JABGDWO-GY97629 -u prabhakarreddy1433
+Password:
+* SnowSQL * v1.3.3
+Type SQL statements or !help
+prabhakarreddy143#COMPUTE_WH@(no database).(no schema)>USE DATABASE MYSNOW;
++----------------------------------+
+| status                           |
+|----------------------------------|
+| Statement executed successfully. |
++----------------------------------+
+1 Row(s) produced. Time Elapsed: 0.193s
+prabhakarreddy143#COMPUTE_WH@MYSNOW.PUBLIC>USE SCHEMA PUBLIC;
+
+
 C:/Snowflakefilesprabha/employee_data_final.csv
 
 emp_id,emp_name,department,salary
