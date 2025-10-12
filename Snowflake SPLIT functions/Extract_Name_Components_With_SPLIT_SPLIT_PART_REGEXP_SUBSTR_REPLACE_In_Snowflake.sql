@@ -246,3 +246,12 @@ Function	            Empty Token Handling
 SPLIT_TO_TABLE	        ✅ Skips empty tokens
 STRTOK_SPLIT_TO_TABLE	❌ Preserves empty tokens
 
+
+Mnemonic Tip for Interviews
+***************************************
+
+SPLIT_TO_TABLE is like a filter — it cleans out blanks. 
+
+STRTOK_SPLIT_TO_TABLE is like a scanner — it records everything, even blanks.
+
+
