@@ -36,6 +36,14 @@ prabhakarreddy1433#COMPUTE_WH@MYSNOW.PUBLIC>PUT file://C:/Snowflakefilesprabha/e
 1 Row(s) produced. Time Elapsed: 1.727s
 
 
+LIST @employee_stage_final--No rows why?
+
+Reason:
+*******************
+No files uploaded yet
+You must upload files using the PUT command (from SnowSQL or Snowflake CLI):
+
+
 prabhakarreddy1433#COMPUTE_WH@MYSNOW.PUBLIC>COPY INTO employee_data_final FROM @employee_stage_final/employee_data_final.csv.gz FILE_FORMAT = (TYPE = 'CSV'
                                              FIELD_OPTIONALLY_ENCLOSED_BY = '"' SKIP_HEADER = 1);
 +-------------------------------------------------+--------+-------------+-------------+-------------+-------------+-------------+------------------+-----------------------+-------------------------+
