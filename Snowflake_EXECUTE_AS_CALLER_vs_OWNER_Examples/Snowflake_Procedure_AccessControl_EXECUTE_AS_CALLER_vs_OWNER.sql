@@ -64,3 +64,15 @@ CALL admin_schema.proc_execute_as_caller();
 -- Reason: Procedure runs with owner's privileges (ACCOUNTADMIN)
 CALL admin_schema.proc_execute_as_owner();  
 -- Expected output: 2
+
+
+
+
+******************************************************************************
+
+“EXECUTE AS CALLER requires the invoking role to have SELECT on the table, USAGE on the schema, and 
+EXECUTE on the procedure — whereas EXECUTE AS OWNER bypasses caller privileges and runs with the procedure owners access.”
+
+
+“Procedures with EXECUTE AS CALLER require the invoking role to have full access — SELECT on the table, USAGE on the schema, and 
+EXECUTE on the procedure — while EXECUTE AS OWNER runs with the creators privileges, bypassing caller-level grants
