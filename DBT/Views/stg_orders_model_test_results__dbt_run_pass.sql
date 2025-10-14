@@ -251,3 +251,45 @@ ORDER_ID	CUSTOMER_ID	ORDER_DATE	TOTAL_AMOUNT	ORDER_STATUS
 1001	C001	2023-10-01	250.00	completed
 1002	C002	2023-10-02	180.00	pending
 1003	C003	2023-10-03	320.00	completed
+
+
+
+*******************************************************
+
+
+Why Two YAML Files?
+File	Purpose	What It Describes
+sources.yml	Declares external data sources	Raw tables in Snowflake (e.g., raw.orders)
+stg_orders.yml	Declares dbt models	Your transformed staging model (e.g., stg_orders)
+🔍 What Goes in Each YAML?
+✅ sources.yml
+Used to define external tables (not created by dbt)
+
+Includes:
+
+database, schema, table name
+
+description, freshness, loaded_at_field
+
+Column-level tests for source data quality
+
+✅ stg_orders.yml
+Used to define dbt models (created by your SQL files)
+
+Includes:
+
+model name, description
+
+Column-level tests for transformed data quality
+
+🔄 Example Flow
+sources.yml defines raw.orders — the original data.
+
+stg_orders.sql transforms it into stg_orders.
+
+stg_orders.yml tests the transformed model.
+
+Think of sources.yml as the input contract, and stg_orders.yml as the output validation.
+
+Would you like a diagram showing how sources.yml, stg_orders.sql, and stg_orders.yml connect in your dbt DAG? 
+I can also help you build a reusable template for staging model documentation.
