@@ -293,3 +293,10 @@ Think of sources.yml as the input contract, and stg_orders.yml as the output val
 
 Would you like a diagram showing how sources.yml, stg_orders.sql, and stg_orders.yml connect in your dbt DAG? 
 I can also help you build a reusable template for staging model documentation.
+
+
+
+
+File	           What It Tests	           Why It Matters
+sources.yml	       Raw data from Snowflake	   Catch issues early (bad source data)
+stg_orders.yml	   Transformed dbt model	   Validate your logic and filters
