@@ -1,0 +1,2 @@
+06:39:27 1 of 1 START sql table model dbt_pk.stg_orders_table ........................... [RUN]
+06:39:29 1 of 1 OK created sql table model dbt_pk.stg_orders_table ...................... [[32mSUCCESS 1[0m in 1.40s]

@@ -1,0 +1,10 @@
+# models/staging/sources.yml
+
+version: 2
+
+sources:
+  - name: raw
+    schema: public         # Replace with actual schema
+    database: mysnow    # Optional if using default target
+    tables:
+      - name: orders
