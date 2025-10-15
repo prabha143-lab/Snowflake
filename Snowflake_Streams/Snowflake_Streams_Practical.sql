@@ -78,11 +78,15 @@ CUSTOMER_ID	NAME	EMAIL	LAST_UPDATED	METADATA$ACTION	METADATA$ISUPDATE	METADATA$R
 
 
 Why You are Seeing Duplicate Records in the Stream
-Snowflake Streams track changes (inserts, updates, deletes) to a table at the row level, not at the primary key level. This means:
+Snowflake Streams track changes (inserts, updates, deletes) to a table at the row level, not at the primary key level. 
 
-If you insert the same customer_id twice (like David with ID 104), Snowflake treats each insert as a distinct change, even if the data is identical.
+This means:
 
-The stream doesn’t deduplicate based on business logic or primary key — it simply logs every change that modifies the table.
+If you insert the same customer_id twice (like David with ID 104), 
+Snowflake treats each insert as a distinct change, even if the data is identical.
+
+The stream doesn’t deduplicate based on business logic or primary key — 
+it simply logs every change that modifies the table.
 
 
 *************************************************
@@ -249,7 +253,7 @@ SELECT *FROM source_customers_stream;
 CUSTOMER_ID	NAME	EMAIL	LAST_UPDATED	METADATA$ACTION	METADATA$ISUPDATE	METADATA$ROW_ID
 104	David	david@example.com	2025-09-14 08:49:08.653	INSERT	FALSE	ee5645298e421da6e4cf6a6bae3ddb555aa95cc2
 
---APPEND_ONLY = FLASE equals to Standard stream
+--APPEND_ONLY = FALSE equals to Standard stream
 
 --APPEND_ONLY = TRUE means it will capture only INSERT records
 
