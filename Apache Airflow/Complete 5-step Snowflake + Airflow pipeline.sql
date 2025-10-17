@@ -118,6 +118,7 @@ notify_slack = PythonOperator(
 )
 
 
+
 🔗 DAG Flow Summary
 python
 load_sales >> run_dbt >> calc_kpis >> export_results >> notify_slack
