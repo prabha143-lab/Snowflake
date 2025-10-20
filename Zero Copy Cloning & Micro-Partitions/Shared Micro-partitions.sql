@@ -12,9 +12,11 @@ on the cloned table, will new micro-partitions be created for all three operatio
 
 Any DML operation (INSERT, UPDATE, or DELETE) on the cloned table triggers Snowflake's "copy-on-write" mechanism. 
 Because micro-partitions are immutable, Snowflake creates new micro-partitions to store the changes. 
-The cloned table's metadata then updates to point to these new partitions, while the original tables pointers remain unchanged.
+The cloned table's metadata then updates to point to these new partitions, 
+while the original tables pointers remain unchanged.
 
-DML on Original Table: If you then perform DML operations on the original table, will the changes be reflected in the cloned table?
+DML on Original Table: If you then perform DML operations on the original table, 
+will the changes be reflected in the cloned table?
 
 Changes to the original table are not reflected in the cloned table. 
 The clone is a static snapshot of the original at the moment it was created. 
