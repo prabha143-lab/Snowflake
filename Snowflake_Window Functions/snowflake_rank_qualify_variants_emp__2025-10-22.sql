@@ -28,6 +28,8 @@ values(7839, 'KING', 'PRESIDENT', null, to_date('17-11-1981','dd-mm-yyyy'),5000,
 
 SELECT *FROM EMP;
 
+
+****************************************************************************************************
 -- Query 1: Inline RANK() with QUALIFY
 -- Filters top earners per department directly using QUALIFY
 SELECT E.*,
@@ -44,6 +46,7 @@ QUALIFY rank = 1;
 -- 7698  | BLAKE | MANAGER   | 7839 | 1981-05-01 | 2850.00|      | 30     | 1
 
 
+***************************************************************************************************
 -- Query 2: WITH clause + QUALIFY
 -- Precomputes RANK() in CTE, then filters with QUALIFY
 WITH ranked_employees AS (
@@ -58,6 +61,7 @@ QUALIFY rank = 1;
 -- Output: Same as Query 1
 
 
+****************************************************************************************************
 -- Query 3: WITH clause + WHERE
 -- Precomputes RANK() in CTE, then filters with WHERE
 WITH ranked_employees AS (
@@ -71,7 +75,7 @@ WHERE rank = 1;
 
 -- Output: Same as Query 1
 
-
+****************************************************************************************************
 -- Query 4: Pure inline QUALIFY without alias
 -- Uses QUALIFY directly with RANK() — no CTE, no alias
 SELECT *
