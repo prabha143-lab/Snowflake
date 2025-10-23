@@ -92,6 +92,18 @@ SELECT * FROM MYSNOW.PUBLIC.SAMPLE_TABLE;
 Scenario 2:
 
 
+Question 2: In Snowflake, if a Transient table exists, can you 
+create a Permanent table or a Temporary table with the same name in the same schema? 
+What happens during querying?
+
+Answer: You cannot create a Permanent table (or any other schema-scoped table) 
+with the same name as an existing Transient table. 
+
+However, you can create a Temporary table, 
+which will shadow the Transient table in the current session.
+
+
+
 -- ❌ Drop any existing table named 'sample_table' in the schema
 -- This removes any permanent or transient version of the table from MYSNOW.PUBLIC
 DROP TABLE MYSNOW.PUBLIC.sample_table;
@@ -166,6 +178,19 @@ SELECT * FROM MYSNOW.PUBLIC.SAMPLE_TABLE;
 *********************************************************************************************************
 Scenario 3:
 
+
+Question 3: In Snowflake, if a Temporary table is created first and data is inserted, 
+can a Permanent table with the same name be created afterward? 
+
+What happens when attempting to create a subsequent Transient table, 
+and where does all the data reside when the session closes?
+
+Answer: The Permanent table creation succeeds because Temporary 
+tables are session-scoped and do not conflict at the schema level. 
+
+However, the attempt to create a Transient table fails because the 
+Permanent table is already present. All INSERT statements target 
+the Temporary table due to shadowing. Upon session close, the Permanent table remains but is empty.
 
 -- Case 1: TEMPORARY → PERMANENT → INSERT → SESSION CLOSE
 -- *******************************************************
@@ -272,6 +297,19 @@ create or replace TABLE SAMPLE_TABLE (
 *************************************************************************************************
 
 Scenario 4:
+
+Question 4: In Snowflake, if a Temporary table is created 
+first and data is inserted, can a Transient table with the same name be created afterward? 
+
+What happens when attempting to create a subsequent 
+Permanent table, and what is the final state of the tables after the session closes?
+
+Answer: Yes, the Transient table creation succeeds because 
+Temporary tables are session-scoped. However, the attempt to 
+create a Permanent table fails immediately after, because the Transient table is already present. 
+
+All INSERT statements target the Temporary table 
+due to shadowing. Upon session close, the Transient table remains but is empty
 
 
 -- Case 2: TEMPORARY → TRANSIENT → INSERT → SESSION CLOSE
