@@ -1,8 +1,10 @@
 Question:
-In Snowflake, can you create permanent, transient, and temporary tables with the same name in the same schema and database?
+In Snowflake, can you create permanent, transient, and 
+temporary tables with the same name in the same schema and database?
 
 Answer:
-You can create permanent and temporary tables with the same name in Snowflake, but not permanent and transient tables with the same name in the same schema.
+You can create permanent and temporary tables with the same name in Snowflake, 
+but not permanent and transient tables with the same name in the same schema.
 
 DROP TABLE MYSNOW.PUBLIC.sample_table;
 
@@ -51,8 +53,11 @@ ID	NAME
 6	Frank
 
 
-Why This Happens
-Even though you used the full name MYSNOW.PUBLIC.sample_table, Snowflake’s session resolution rules prioritize temporary tables over permanent ones if they share the same name.
+Why This Happens:
+**********************
+Even though you used the full name MYSNOW.PUBLIC.sample_table, 
+Snowflake’s session resolution rules prioritize temporary tables 
+over permanent ones if they share the same name.
 
 ✅ Temporary tables "shadow" permanent tables in the same session.
 
@@ -80,7 +85,8 @@ ID	NAME
 Next scenario
 
 Question:
-In Snowflake, can you create transient, and temporary tables with the same name in the same schema and database?
+In Snowflake, can you create transient, and 
+temporary tables with the same name in the same schema and database?
 
 Answer:
 You can create transient and temporary tables with the same name in Snowflake
@@ -123,7 +129,9 @@ ID	NAME
 
 
 Why This Happens
-Even though you used the full name MYSNOW.PUBLIC.sample_table, Snowflake’s session resolution rules prioritize temporary tables over transient ones if they share the same name.
+Even though you used the full name MYSNOW.PUBLIC.sample_table, 
+Snowflake’s session resolution rules prioritize temporary tables
+over transient ones if they share the same name.
 
 ✅ Temporary tables "shadow" transient tables in the same session.
 
@@ -151,7 +159,8 @@ ID	NAME
 Next Scenario:
 
 Question:
-In Snowflake, I have created a temporary table with a certain name. Can I create a permanent table with the same name in the same schema and database?
+In Snowflake, I have created a temporary table with a certain name. 
+Can I create a permanent table with the same name in the same schema and database?
 
 Answer:
 Yes
@@ -231,7 +240,8 @@ Next scenario
 Next Scenario:
 
 Question:
-In Snowflake, I have created a temporary table with a certain name. Can I create a TRANSIENT table with the same name in the same schema and database?
+In Snowflake, I have created a temporary table with a certain name. 
+Can I create a TRANSIENT table with the same name in the same schema and database?
 
 Answer:
 Yes
@@ -324,9 +334,11 @@ In Snowflake:
 
 Permanent, transient, dynamic, and Iceberg tables are all schema-level objects.
 
-That means they cannot share the same name (sample_table) within the same schema (MYSNOW.PUBLIC) at the same time.
+That means they cannot share the same name (sample_table) 
+within the same schema (MYSNOW.PUBLIC) at the same time.
 
-Temporary tables, however, are session-scoped and do not live in the schema—so they can share the same name.
+Temporary tables, however, are session-scoped and do not live 
+in the schema—so they can share the same name.
 
 
 *********************************************************
@@ -336,17 +348,25 @@ Another scenario
 
 Question: 
 
-In Snowflake, you first create a transient schema and then create a permanent table within it. 
-However, because the schema is transient, the table inherits that property and becomes transient by default. 
-After inserting data into this table, you later create a temporary table with the same name and insert different data. 
-When you query the table using its fully qualified name, Snowflake returns only the data from the temporary table. 
+In Snowflake, you first create a transient schema 
+and then create a permanent table within it. 
+However, because the schema is transient, the table 
+inherits that property and becomes transient by default.
+ 
+After inserting data into this table, you later 
+create a temporary table with the same name and insert different data. 
+When you query the table using its fully qualified name, 
+Snowflake returns only the data from the temporary table. 
 
 Answer: 
-This happens because temporary tables take precedence over transient or permanent tables with the same name within the same session.
+This happens because temporary tables take precedence 
+over transient or permanent tables with the same name within the same session.
 
 Answer:
-Snowflake shows only the temporary tables data because temporary tables take priority over transient or permanent tables
-with the same name in your session—even when using the full schema path. To access the transient table, you must drop the temporary one first.
+Snowflake shows only the temporary tables data because 
+temporary tables take priority over transient or permanent tables
+with the same name in your session—even when using the full schema path. 
+To access the transient table, you must drop the temporary one first.
 
 CREATE OR REPLACE TRANSIENT SCHEMA MYSNOW.MY_TRANSIENT_SCHEMA;
 
@@ -397,13 +417,17 @@ ID	NAME
 ************************************************************************
 Another Scenario
 
-In Snowflake, you first create a transient schema and then create a permanent table within it. 
+In Snowflake, you first create a transient schema and 
+then create a permanent table within it. 
 
-However, because the schema is transient, the table inherits that property and becomes transient by default. 
-After inserting data into this table, you attempt to create another table using CREATE TABLE with the same name. 
+However, because the schema is transient, the table
+inherits that property and becomes transient by default. 
+After inserting data into this table, you attempt to 
+create another table using CREATE TABLE with the same name. 
 Snowflake returns an error stating that the object already exists. 
 
-Explain why this error occurs, even though the new statement is intended to create a permanent table.
+Explain why this error occurs, even though 
+the new statement is intended to create a permanent table.
 
 DROP  SCHEMA MYSNOW.MY_TRANSIENT_SCHEMA;
 
@@ -417,7 +441,8 @@ CREATE TABLE MYSNOW.MY_TRANSIENT_SCHEMA.sample_table (
 );--Table SAMPLE_TABLE successfully created.
 
 SELECT TABLE_CATALOG,TABLE_SCHEMA,TABLE_NAME,TABLE_TYPE,
-IS_TRANSIENT,IS_TEMPORARY FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='SAMPLE_TABLE'
+IS_TRANSIENT,IS_TEMPORARY FROM INFORMATION_SCHEMA.TABLES 
+WHERE TABLE_NAME='SAMPLE_TABLE'
 AND TABLE_SCHEMA='MY_TRANSIENT_SCHEMA';
 
 TABLE_CATALOG	TABLE_SCHEMA	TABLE_NAME	TABLE_TYPE	IS_TRANSIENT IS_TEMPORARY
