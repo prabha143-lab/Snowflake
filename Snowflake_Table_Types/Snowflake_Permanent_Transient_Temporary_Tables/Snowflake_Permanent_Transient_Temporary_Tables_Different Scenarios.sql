@@ -411,4 +411,147 @@ CREATE OR REPLACE TRANSIENT TABLE SAMPLE_TABLE (
 
 *************************************************************************************
 
+Scenario 5:
 
+
+Question 2: In Snowflake, can you create permanent, transient, 
+dynamic, and Iceberg tables with the same name in the same schema?
+
+Answer: No — all are schema-level objects and must have unique names. 
+Only temporary tables can share names since they are session-scoped.
+
+
+-- Drop any existing table
+DROP TABLE MYSNOW.PUBLIC.sample_table;
+
+-- Create permanent table
+CREATE OR REPLACE TABLE MYSNOW.PUBLIC.sample_table (
+    id INT,
+    name STRING
+);
+
+
+CREATE TRANSIENT TABLE MYSNOW.PUBLIC.sample_table (
+    id INT,
+    name STRING
+);--Object 'MYSNOW.PUBLIC.SAMPLE_TABLE' already exists.
+
+
+CREATE TEMPORARY TABLE MYSNOW.PUBLIC.sample_table (
+    id INT,
+    name STRING
+);--Table SAMPLE_TABLE successfully created.
+
+CREATE ICEBERG TABLE MYSNOW.PUBLIC.sample_table (
+    id INT,
+    name STRING
+)
+CATALOG = 'my_catalog'
+EXTERNAL_VOLUME = 'my_volume';--Object 'SAMPLE_TABLE' already exists as TABLE
+
+CREATE OR REPLACE DYNAMIC TABLE MYSNOW.PUBLIC.sample_table
+TARGET_LAG = '1 minute'
+AS
+SELECT id, name FROM source_table;--Object 'SAMPLE_TABLE' already exists as TABLE
+
+
+In Snowflake:
+
+Permanent, transient, dynamic, and Iceberg tables are all schema-level objects.
+
+That means they cannot share the same name (sample_table) 
+within the same schema (MYSNOW.PUBLIC) at the same time.
+
+Temporary tables, however, are session-scoped and do not live 
+in the schema—so they can share the same name.
+
+********************************************************************************************
+
+Scenario 6:
+
+
+Question: 
+
+In Snowflake, you first create a transient schema 
+and then create a permanent table within it. 
+However, because the schema is transient, the table 
+inherits that property and becomes transient by default.
+ 
+After inserting data into this table, you later 
+create a temporary table with the same name and insert different data. 
+When you query the table using its fully qualified name, 
+Snowflake returns only the data from the temporary table. 
+
+Answer: 
+This happens because temporary tables take precedence 
+over transient or permanent tables with the same name within the same session.
+
+Answer:
+Snowflake shows only the temporary tables data because 
+temporary tables take priority over transient or permanent tables
+with the same name in your session—even when using the full schema path. 
+To access the transient table, you must drop the temporary one first.
+
+CREATE OR REPLACE TRANSIENT SCHEMA MYSNOW.MY_TRANSIENT_SCHEMA;
+
+DROP TABLE MYSNOW.MY_TRANSIENT_SCHEMA.sample_table;
+
+CREATE TABLE MYSNOW.MY_TRANSIENT_SCHEMA.sample_table (
+    id INT,
+    name STRING
+);
+
+---Below TRANSIENT table created  
+create or replace TRANSIENT TABLE MYSNOW.MY_TRANSIENT_SCHEMA.SAMPLE_TABLE (
+	ID NUMBER(38,0),
+	NAME VARCHAR(16777216)
+    );
+
+INSERT INTO MYSNOW.MY_TRANSIENT_SCHEMA.SAMPLE_TABLE (id, name) VALUES
+(1, 'Alice'),
+(2, 'Bob'),
+(3, 'Charlie');--number of rows inserted 3
+
+SELECT *FROM MYSNOW.MY_TRANSIENT_SCHEMA.SAMPLE_TABLE;
+
+ID	NAME
+1	Alice
+2	Bob
+3	Charlie
+
+CREATE TEMPORARY TABLE MYSNOW.MY_TRANSIENT_SCHEMA.sample_table (
+    id INT,
+    name STRING
+);--Table SAMPLE_TABLE successfully created.
+
+
+
+INSERT INTO MYSNOW.MY_TRANSIENT_SCHEMA.sample_table (id, name) VALUES
+(4, 'David'),
+(5, 'Eva'),
+(6, 'Frank');--number of rows inserted 3
+
+SELECT *FROM MYSNOW.MY_TRANSIENT_SCHEMA.SAMPLE_TABLE;
+
+ID	NAME
+4	David
+5	Eva
+6	Frank
+
+
+How to Access the Transient Table Again:
+❌ End the current session (log out or close worksheet)
+
+✅ Start a new session — the temporary table will be gone
+
+🧾 Run:
+
+sql
+SELECT * FROM MYSNOW.MY_TRANSIENT_SCHEMA.sample_table;
+✅ You’ll see the original 3 records from the transient table:
+
+Code
+ID   NAME
+1    Alice
+2    Bob
+3    Charlie
