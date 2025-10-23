@@ -89,8 +89,82 @@ SELECT * FROM MYSNOW.PUBLIC.SAMPLE_TABLE;
 
 
 ***************************************************************************************
+Scenario 4:
 
-Scenario 2:
+
+-- ❌ Drop any existing table named 'sample_table' in the schema
+-- This removes any permanent or transient version of the table from MYSNOW.PUBLIC
+DROP TABLE MYSNOW.PUBLIC.sample_table;
+
+-- ✅ Create a TRANSIENT table
+-- Transient tables persist across sessions and are stored in the schema
+-- They do not support Fail-safe but do support Time Travel and manual commits
+CREATE TRANSIENT TABLE MYSNOW.PUBLIC.sample_table (
+    id INT,
+    name STRING
+);
+
+-- ✅ Insert 3 records into the transient table
+-- These records are stored in the schema and persist across sessions
+INSERT INTO MYSNOW.PUBLIC.sample_table (id, name) VALUES
+(1, 'Alice'),
+(2, 'Bob'),
+(3, 'Charlie');
+
+-- 🔍 Query the transient table — returns 3 records
+SELECT * FROM MYSNOW.PUBLIC.sample_table;
+
+-- Output:
+-- ID   NAME
+-- 1    Alice
+-- 2    Bob
+-- 3    Charlie
+
+-- ❌ Attempt to create a PERMANENT table with the same name
+-- Fails because a transient table with the same name already exists in the schema
+CREATE TABLE MYSNOW.PUBLIC.sample_table (
+    id INT,
+    name STRING
+);--SQL compilation error: Object 'MYSNOW.PUBLIC.SAMPLE_TABLE' already exists.
+
+-- 🔍 Query still resolves to the transient table — shows 3 records
+SELECT * FROM MYSNOW.PUBLIC.sample_table;--3 records
+
+-- ✅ Create a TEMPORARY table with the same name
+-- Temporary tables are session-scoped and shadow transient tables during the session
+-- From this point onward, all queries will resolve to the temporary table
+CREATE TEMPORARY TABLE MYSNOW.PUBLIC.sample_table (
+    id INT,
+    name STRING
+);--Table SAMPLE_TABLE successfully created.
+
+-- ✅ Recreate the TEMPORARY table again (overwriting the previous one)
+-- This confirms that the session is now working with a fresh temporary table
+-- The transient table still exists in the schema, but is shadowed
+CREATE OR REPLACE TEMPORARY TABLE SAMPLE_TABLE (
+    ID NUMBER(38,0),
+    NAME VARCHAR(16777216)
+);
+
+-- 🔍 Query resolves to the temporary table — returns 0 records
+-- Even though the transient table has 3 records, Snowflake uses the temporary one in this session
+SELECT COUNT(*) FROM MYSNOW.PUBLIC.SAMPLE_TABLE;--0 records
+
+-- 🔄 After closing the session and reconnecting:
+-- ✅ Temporary table is automatically dropped (session-scoped)
+-- ✅ Transient table remains and is now visible again
+-- ✅ Query now resolves to the transient table, showing the 3 records inserted earlier
+SELECT * FROM MYSNOW.PUBLIC.SAMPLE_TABLE;
+
+-- Output:
+-- ID   NAME
+-- 1    Alice
+-- 2    Bob
+-- 3    Charlie
+
+
+*********************************************************************************************************
+Scenario 3:
 
 
 -- Case 1: TEMPORARY → PERMANENT → INSERT → SESSION CLOSE
@@ -197,7 +271,7 @@ create or replace TABLE SAMPLE_TABLE (
 
 *************************************************************************************************
 
-Scenario 3:
+Scenario 4:
 
 
 -- Case 2: TEMPORARY → TRANSIENT → INSERT → SESSION CLOSE
@@ -298,77 +372,4 @@ CREATE OR REPLACE TRANSIENT TABLE SAMPLE_TABLE (
 
 
 *************************************************************************************
-Scenario 4:
-
-
--- ❌ Drop any existing table named 'sample_table' in the schema
--- This removes any permanent or transient version of the table from MYSNOW.PUBLIC
-DROP TABLE MYSNOW.PUBLIC.sample_table;
-
--- ✅ Create a TRANSIENT table
--- Transient tables persist across sessions and are stored in the schema
--- They do not support Fail-safe but do support Time Travel and manual commits
-CREATE TRANSIENT TABLE MYSNOW.PUBLIC.sample_table (
-    id INT,
-    name STRING
-);
-
--- ✅ Insert 3 records into the transient table
--- These records are stored in the schema and persist across sessions
-INSERT INTO MYSNOW.PUBLIC.sample_table (id, name) VALUES
-(1, 'Alice'),
-(2, 'Bob'),
-(3, 'Charlie');
-
--- 🔍 Query the transient table — returns 3 records
-SELECT * FROM MYSNOW.PUBLIC.sample_table;
-
--- Output:
--- ID   NAME
--- 1    Alice
--- 2    Bob
--- 3    Charlie
-
--- ❌ Attempt to create a PERMANENT table with the same name
--- Fails because a transient table with the same name already exists in the schema
-CREATE TABLE MYSNOW.PUBLIC.sample_table (
-    id INT,
-    name STRING
-);--SQL compilation error: Object 'MYSNOW.PUBLIC.SAMPLE_TABLE' already exists.
-
--- 🔍 Query still resolves to the transient table — shows 3 records
-SELECT * FROM MYSNOW.PUBLIC.sample_table;--3 records
-
--- ✅ Create a TEMPORARY table with the same name
--- Temporary tables are session-scoped and shadow transient tables during the session
--- From this point onward, all queries will resolve to the temporary table
-CREATE TEMPORARY TABLE MYSNOW.PUBLIC.sample_table (
-    id INT,
-    name STRING
-);--Table SAMPLE_TABLE successfully created.
-
--- ✅ Recreate the TEMPORARY table again (overwriting the previous one)
--- This confirms that the session is now working with a fresh temporary table
--- The transient table still exists in the schema, but is shadowed
-CREATE OR REPLACE TEMPORARY TABLE SAMPLE_TABLE (
-    ID NUMBER(38,0),
-    NAME VARCHAR(16777216)
-);
-
--- 🔍 Query resolves to the temporary table — returns 0 records
--- Even though the transient table has 3 records, Snowflake uses the temporary one in this session
-SELECT COUNT(*) FROM MYSNOW.PUBLIC.SAMPLE_TABLE;--0 records
-
--- 🔄 After closing the session and reconnecting:
--- ✅ Temporary table is automatically dropped (session-scoped)
--- ✅ Transient table remains and is now visible again
--- ✅ Query now resolves to the transient table, showing the 3 records inserted earlier
-SELECT * FROM MYSNOW.PUBLIC.SAMPLE_TABLE;
-
--- Output:
--- ID   NAME
--- 1    Alice
--- 2    Bob
--- 3    Charlie
-
 
