@@ -414,7 +414,7 @@ CREATE OR REPLACE TRANSIENT TABLE SAMPLE_TABLE (
 Scenario 5:
 
 
-Question 2: In Snowflake, can you create permanent, transient, 
+Question : In Snowflake, can you create permanent, transient, 
 dynamic, and Iceberg tables with the same name in the same schema?
 
 Answer: No — all are schema-level objects and must have unique names. 
@@ -491,6 +491,16 @@ Snowflake shows only the temporary tables data because
 temporary tables take priority over transient or permanent tables
 with the same name in your session—even when using the full schema path. 
 To access the transient table, you must drop the temporary one first.
+
+Question 6: In Snowflake, what happens if you create a transient table 
+inside a transient schema, then later create a temporary table with 
+the same name and insert different data?
+
+✅ Answer: Temporary tables take precedence over transient (or permanent) 
+tables with the same name during the session. Even when using the fully qualified name, 
+Snowflake resolves queries to the temporary table. 
+To access the transient table again, you must end the session or drop the temporary table.
+
 
 CREATE OR REPLACE TRANSIENT SCHEMA MYSNOW.MY_TRANSIENT_SCHEMA;
 
