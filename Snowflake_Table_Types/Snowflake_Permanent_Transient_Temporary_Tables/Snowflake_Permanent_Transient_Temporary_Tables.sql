@@ -235,7 +235,6 @@ SELECT *FROM MYSNOW.PUBLIC.sample_table;
 
 ***********************************************************
 
-Next scenario
 
 Next Scenario:
 
