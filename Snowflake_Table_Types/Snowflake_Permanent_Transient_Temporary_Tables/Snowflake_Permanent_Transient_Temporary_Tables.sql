@@ -474,36 +474,3 @@ CREATE TABLE MYSNOW.MY_TRANSIENT_SCHEMA.sample_table (
 
 
 **************************************************************************************
-
-
-CREATE OR REPLACE TRANSIENT TABLE staging_transactions (
-    transaction_id STRING,
-    account_number STRING,
-    amount NUMBER(10,2),
-    currency STRING,
-    transaction_date DATE
-);
-
-
-CREATE OR REPLACE STREAM staging_transactions_stream
-ON TABLE staging_transactions
-APPEND_ONLY = TRUE;  -- Set to TRUE if you only want INSERTs
-
---Stream STAGING_TRANSACTIONS_STREAM successfully created.
-
-
-
-CREATE OR REPLACE TEMPORARY TABLE staging_transactions (
-    transaction_id STRING,
-    account_number STRING,
-    amount NUMBER(10,2),
-    currency STRING,
-    transaction_date DATE
-);
-
-
-CREATE OR REPLACE STREAM staging_transactions_stream
-ON TABLE staging_transactions
-APPEND_ONLY = TRUE;  -- Set to TRUE if you only want INSERTs
-
---Stream STAGING_TRANSACTIONS_STREAM successfully created.
